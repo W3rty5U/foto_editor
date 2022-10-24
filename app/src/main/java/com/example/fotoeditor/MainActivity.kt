@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        imageView = findViewById(R.id.wtf)
+        imageView = findViewById(R.id.imageView)
         takePictureButton = findViewById(R.id.take_pic_btn)
 
         takePictureButton.setOnClickListener {
