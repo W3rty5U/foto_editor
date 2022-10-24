@@ -5,8 +5,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.SeekBar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -20,7 +21,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var imageView: ImageView
-    private lateinit var takePictureButton: Button
+    private lateinit var rotateLeftBtn: ImageButton
+    private lateinit var rotateRightBtn: ImageButton
+    private lateinit var opacitySeekbar: SeekBar
+    private lateinit var redSeekbar: SeekBar
+    private lateinit var greenSeekbar: SeekBar
+    private lateinit var blueSeekbar: SeekBar
 
     fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
         val matrix = Matrix()
@@ -54,9 +60,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         imageView = findViewById(R.id.imageView)
-        takePictureButton = findViewById(R.id.take_pic_btn)
+        rotateLeftBtn = findViewById(R.id.rotateLeftButton)
+        rotateRightBtn = findViewById(R.id.rotateRightButton)
+        opacitySeekbar = findViewById(R.id.seekbarOpacity)
+        redSeekbar = findViewById(R.id.seekbarRed)
+        greenSeekbar = findViewById(R.id.seekbarGreen)
+        blueSeekbar = findViewById(R.id.seekbarBlue)
 
-        takePictureButton.setOnClickListener {
+        imageView.setOnClickListener {
             val uri = FileProvider.getUriForFile(
                 this,
                 "com.example.fotoeditor",
