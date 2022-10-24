@@ -56,7 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
-            android:max="100"
+            android:max="255"
+            android:progress="255"
             android:thumbTint="@color/gray"
             android:progressTint="@color/gray" />
         <TextView
@@ -70,6 +71,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
             android:max="255"
+            android:progress="255"
             android:thumbTint="@color/red"
             android:progressTint="@color/red" />
         <TextView
@@ -83,6 +85,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
             android:max="255"
+            android:progress="255"
             android:thumbTint="@color/green"
             android:progressTint="@color/green" />
         <TextView
@@ -96,6 +99,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
             android:max="255"
+            android:progress="255"
             android:thumbTint="@color/blue"
             android:progressTint="@color/blue" />
     </LinearLayout>

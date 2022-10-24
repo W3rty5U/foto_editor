@@ -1,8 +1,6 @@
 package com.example.fotoeditor
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
+import android.graphics.*
 import android.media.ExifInterface
 import android.os.Bundle
 import android.widget.ImageButton
@@ -27,8 +25,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var redSeekbar: SeekBar
     private lateinit var greenSeekbar: SeekBar
     private lateinit var blueSeekbar: SeekBar
+    private lateinit var bitmap: Bitmap
 
-    fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
+    fun rotateImage(source: Bitmap, angle: Float): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(angle)
         return Bitmap.createBitmap(
@@ -37,20 +36,30 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    fun updateImageFilter() {
+        imageView.imageAlpha = opacitySeekbar.progress
+        imageView.colorFilter = PorterDuffColorFilter(Color.rgb(
+            redSeekbar.progress,
+            greenSeekbar.progress,
+            blueSeekbar.progress
+        ), PorterDuff.Mode.MULTIPLY)
+    }
+
     private var contract = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it) {
             val imgFile = File(cacheDir, PHOTO_FILENAME)
             if (imgFile.exists()) {
                 val ei = ExifInterface(imgFile.absolutePath)
                 val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)
-                var bmp = BitmapFactory.decodeFile(imgFile.absolutePath)
-                bmp = when (orientation) {
-                    ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bmp, 90f)
-                    ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bmp, 180f)
-                    ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bmp, 270f)
-                    else -> { bmp }
+                bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
+                bitmap = when (orientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(bitmap, 90f)
+                    ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(bitmap, 180f)
+                    ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
+                    else -> { bitmap }
                 }
-                imageView.setImageBitmap(bmp)
+                imageView.setImageBitmap(bitmap)
+                updateImageFilter()
             }
         }
     }
@@ -83,6 +92,19 @@ class MainActivity : AppCompatActivity() {
         rotateRightBtn.setOnClickListener {
             imageView.rotation += 90
         }
+
+        var commonListener = object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                updateImageFilter()
+            }
+            override fun onStartTrackingTouch(p0: SeekBar?) {}
+            override fun onStopTrackingTouch(p0: SeekBar?) {}
+        }
+
+        opacitySeekbar.setOnSeekBarChangeListener(commonListener)
+        redSeekbar.setOnSeekBarChangeListener(commonListener)
+        greenSeekbar.setOnSeekBarChangeListener(commonListener)
+        blueSeekbar.setOnSeekBarChangeListener(commonListener)
     }
 
 }
