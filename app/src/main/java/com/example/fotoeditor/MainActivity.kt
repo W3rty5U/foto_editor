@@ -75,6 +75,14 @@ class MainActivity : AppCompatActivity() {
             )
             contract.launch(uri)
         }
+
+        rotateLeftBtn.setOnClickListener {
+            imageView.rotation -= 90
+        }
+
+        rotateRightBtn.setOnClickListener {
+            imageView.rotation += 90
+        }
     }
 
 }
