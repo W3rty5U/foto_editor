@@ -2,10 +2,13 @@ package com.example.fotoeditor
 
 import android.graphics.*
 import android.media.ExifInterface
+import android.opengl.Visibility
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -18,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         val PHOTO_FILENAME = "pic.jpg"
     }
 
+    private lateinit var imageHint: TextView
     private lateinit var imageView: ImageView
     private lateinit var rotateLeftBtn: ImageButton
     private lateinit var rotateRightBtn: ImageButton
@@ -58,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                     ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(bitmap, 270f)
                     else -> { bitmap }
                 }
+                imageHint.visibility = View.INVISIBLE
                 imageView.setImageBitmap(bitmap)
                 updateImageFilter()
             }
@@ -68,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        imageHint = findViewById(R.id.imageHint)
         imageView = findViewById(R.id.imageView)
         rotateLeftBtn = findViewById(R.id.rotateLeftButton)
         rotateRightBtn = findViewById(R.id.rotateRightButton)
